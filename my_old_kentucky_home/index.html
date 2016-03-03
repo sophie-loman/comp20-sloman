@@ -13,35 +13,72 @@
 <video src="https://www.cs.tufts.edu/comp/20/my_old_kentucky_home.mp4" id="music_video" controls></video>
 <div id="lyrics"></div>
 
-<script type="text/javascript">
+<script>
 	// Complete this section and create a CSS file named style.css
-		var video = document.getElementById("video");
-		var lyrics = document.getElementById("lyrics");
+		var video = document.getElementById("music_video");
+		var captions = document.getElementById("lyrics");
 		video.addEventListener("timeupdate", function() {
-			lyrics.innerHTML = vid.currentTime;
-			if (video.currentTime < 5){
-				lyrics.innerHTML = "<h1>The sun shines bright in My Old Kentucky Home,
-'Tis summer, the people are gay;
-The corn-top's ripe and the meadow's in the bloom
-While the birds make music all the day.
-
-The young folks roll on the little cabin floor,
-All merry, all happy and bright;
-By 'n' by hard times comes a knocking at the door,
-Then My Old Kentucky Home, good night!
-
-Chorus
-
-Weep no more my lady
-Oh weep no more today;
-We will sing one song
-For My Old Kentucky Home
-For My Old Kentucky Home, far away</h1>"
+			if (video.currentTime < 9)
+				captions.innerHTML = "<p>[Instrumentals]</p>"
+			else if (video.currentTime > 9 && video.currentTime < 15){
+				captions.innerHTML = 
+					"<p>The sun shines bright in My Old Kentucky Home,</p>";
+			}
+			else if (video.currentTime > 15 && video.currentTime < 19){
+				captions.innerHTML = "<p>'Tis summer, the people are gay;</p>";
+			}
+			else if (video.currentTime > 19 && video.currentTime < 22){
+					captions.innerHTML = "<p>'Tis summer, the people are gay;</p>"
+						+ '<p><img src="rainbow.jpg" alt="Image" /></p>';
+			}
+			else if (video.currentTime > 22 && video.currentTime < 28){
+				captions.innerHTML = "<p>The corn-top's ripe and the meadow's in the bloom</p>";
+			}
+			else if (video.currentTime > 28 && video.currentTime < 36){
+				captions.innerHTML = "<p>While the birds make music all the day.</p>";
+			}
+			else if (video.currentTime > 36 && video.currentTime < 42){
+				captions.innerHTML = "<p>The young folks roll on the little cabin floor,</p>";
+			}
+			else if (video.currentTime > 42 && video.currentTime < 49){
+				captions.innerHTML = "<p>All merry, all happy and bright;</p>";
+			}
+			else if (video.currentTime > 49 && video.currentTime < 56){
+				captions.innerHTML =  "<p>By 'n' by hard times comes a knocking at the door,</p>";
+			}
+			else if (video.currentTime > 56 && video.currentTime < 64){
+				captions.innerHTML =  "<p>Then My Old Kentucky Home, good night!</p>";
+			}
+			else if (video.currentTime > 64 && video.currentTime < 67.2){
+				captions.innerHTML = "<p>Weep no more my lady</p>";
+			}
+			else if (video.currentTime > 67.2 && video.currentTime < 70){
+				captions.innerHTML = "<p>Weep no more my lady</p>"
+					+ '<p><img src="crying.jpg" alt="Image" /></p>';
+			}
+			else if (video.currentTime > 70 && video.currentTime < 76){
+				captions.innerHTML = "<p>Oh weep no more today;</p>";
+			}
+			else if (video.currentTime > 76 && video.currentTime < 80){
+				captions.innerHTML = "<p>We will sing one song</p>";
+			}
+			else if (video.currentTime > 80 && video.currentTime < 83){
+				captions.innerHTML = "<p>For My Old Kentucky Home</p>";
+			}
+			else if (video.currentTime > 83 && video.currentTime < 90){
+				captions.innerHTML = "<p>For My Old Kentucky Home, far away</p>";
+			}
+			else if (video.currentTime > 90 && video.currentTime < 93){
+				captions.innerHTML = "<p>For My Old Kentucky Home, far away</p>"
+					+ '<p><img src="UK.jpg" alt="Image" /></p>';
+			}
+			else if (video.currentTime > 93){
+				captions.innerHTML = "<p>THE END</p>";
 			}
 			else {
-				lyrics.innerHTML = "";
+				captions.innerHTML = "";
 			}
-		}, false);
+			}, false);
 
 </script>
 </body>
