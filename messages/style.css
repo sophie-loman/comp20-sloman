@@ -1,1 +1,23 @@
-/* Your CSS here... */
+body {
+	font-family:Veranda, Geneva, sans-serif;
+	background:#fff;
+}
+
+h1 {
+	text-align:center;
+	color:#00ff00;
+}
+
+#message {
+	text-align:left;
+	color:000000;
+	padding-bottom:1%;
+	padding-top:1%;
+	padding-right:1%x;
+	padding-left:1%;
+	margin-left:28%;
+	max-width:40%;
+	background:#2095fe;
+	border-radius:10px;
+	font-weight:bold;
+}
