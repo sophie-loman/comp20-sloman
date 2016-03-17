@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Landmarks</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		<link rel="stylesheet" href="style.css" />
+		<script>
+
+			var myLat = 0;
+			var myLng = 0;
+			var myLoc = "";
+			var me = new google.maps.LatLng(myLat, myLng);
+			var login = "";
+			var closestLandmark = "";
+
+			var myOptions = {
+				zoom: 13,
+				center: me,
+				myTypeId: google.maps.MapTypeId.ROADMAP
+			};
+
+			var map;
+			var infowindow = new google.maps.InfoWindow();
+			var my_icon = {
+				url: "Nemo.png",
+				scaledSize: new google.maps.Size(60, 60),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(0, 0)
+			};
+
+			var request = new XMLHttpRequest();
+			var datastore = "https://defense-in-derpth.herokuapp.com/sendLocation";
+	
+			var LocationData = "";
+
+			var classLocs = "";
+			var personLat = 0;
+			var personLng = 0;
+			var person = new google.maps.LatLng(personLat, personLng);
+			var person_icon = {
+				url: "Dori.png",
+				scaledSize: new google.maps.Size(60, 60),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(0, 0)
+			};
+			var person_marker;
+
+			var landmarkLocs = "";
+			var placeLat = 0;
+			var placeLng = 0;
+			var landmark_name = "";
+			var landmark = new google.maps.LatLng(placeLat, placeLng);
+			var landmark_icon = {
+				url: "The_Butt.png",
+				scaledSize: new google.maps.Size(60, 60),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(0, 0)
+			};
+			var landmark_marker;
+			var details = "";
+			var dist = 0;
+			var shortestDist = 0;
+			var pathCoords = [];
+			var path = new google.maps.Polyline;
+
+			function initMap() {
+				elem = document.getElementById('map');
+				map = new google.maps.Map(elem, myOptions);
+				getMyLocation();
+			}
+			
+			function getMyLocation() {
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(function(position) {
+						myLat = position.coords.latitude;
+						myLng = position.coords.longitude;
+						getData();
+					});
+				}
+				else {
+					alert("Geolocation is not supported by your web browser.")
+				}
+			}
+
+			function renderMap()
+			{
+				me = new google.maps.LatLng(myLat, myLng);
+				login = "VIRGIL_STOUT";
+				map.panTo(me);
+				var marker = new google.maps.Marker({
+					position: me,
+					title: login,
+					icon: my_icon,
+					label: "Closest Landmark: " + closestLandmark + "</br>" + "Distance from " + closestLandmark + " :" + shortestDist
+				});
+				marker.setMap(map);
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.setContent(this.title + "</br>" + "</br>" + this.label);
+					infowindow.open(map, this);
+				});
+			}
+
+			function getData() {
+				
+				myLoc = "login=VIRGIL_STOUT&lat=" + myLat + "&lng=" + myLng;
+
+				request.open("POST", datastore, true);
+
+				request.setRequestHeader("Content-type", 
+									"application/x-www-form-urlencoded");
+				
+
+				request.onreadystatechange = function callme() {
+					if(request.readyState == 4 && request.status == 200){
+						LocationData = JSON.parse(request.responseText);
+						classLocs = LocationData.people;
+						landmarkLocs = LocationData.landmarks;
+						placeClass();
+						placeLandmarks();
+					}
+				}
+				request.send(myLoc);
+			}
+			
+
+			function placeClass() {
+				for (count = 0; count < classLocs.length; count++) {
+					login = classLocs[count].login;
+
+					personLat = classLocs[count].lat;
+					personLng = classLocs[count].lng;
+					person = new google.maps.LatLng(personLat, personLng);
+					person_marker = new google.maps.Marker({
+						position: person,
+						title: login,
+						icon: person_icon,
+						label: "</br>" + "</br>" + "Distance from me: " +distanceFromMe(personLat, personLng).toString() + " miles"
+					});
+					if (login != "VIRGIL_STOUT") person_marker.setMap(map);
+					google.maps.event.addListener(person_marker, 'click', function() {
+						infowindow.setContent(this.title + this.label);
+						infowindow.open(map, this);
+					});
+				}
+			}
+
+			function distanceFromMe(Lat, Lng) {
+				var lat2 = myLat;
+				var lon2 = myLng;
+				var lat1 = Lat;
+				var lon1 = Lng;
+
+				if (typeof(Number.prototype.toRad) === "undefined") {
+  					Number.prototype.toRad = function() {
+    				return this * Math.PI / 180;
+  					}
+				}
+
+				var R = 6371;
+				var x1 = lat2-lat1;
+				var dLat = x1.toRad();  
+				var x2 = lon2-lon1;
+				var dLon = x2.toRad();  
+				var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+                Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2);  
+				var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+				var d = R * c;
+				return Math.round(d * 100) / 100;
+			}
+
+			function placeLandmarks() {
+				landmark_name = landmarkLocs[0].properties.Location_Name;
+				placeLat = landmarkLocs[0].geometry.coordinates[1];
+				placeLng = landmarkLocs[0].geometry.coordinates[0];
+				shortestDist = distanceFromMe(placeLat, placeLng);
+				closestLandmark = landmark_name;
+				pathCoords = [
+					{lat: myLat, lng: myLng},
+					{lat: placeLat, lng: placeLng}
+				];
+				for (count = 0; count < landmarkLocs.length; count++) {
+					landmark_name = landmarkLocs[count].properties.Location_Name;
+					placeLat = landmarkLocs[count].geometry.coordinates[1];
+					placeLng = landmarkLocs[count].geometry.coordinates[0];
+					details = landmarkLocs[count].properties.Details;
+					landmark = new google.maps.LatLng(placeLat, placeLng);
+					landmark_marker = new google.maps.Marker({
+						position: landmark,
+						title: landmark_name,
+						icon: landmark_icon,
+						label: details
+					});
+					dist = distanceFromMe(placeLat, placeLng);
+					if ( dist < shortestDist) {
+						shortestDist = dist;
+						console.log(landmark_name);
+						closestLandmark = landmark_name;
+						pathCoords = [
+							{lat: myLat, lng: myLng},
+							{lat: placeLat, lng: placeLng}
+						];
+					} 
+					if (dist <= 1) 
+						landmark_marker.setMap(map);
+
+					google.maps.event.addListener(landmark_marker, 'click', function() {
+						infowindow.setContent(this.title + "</br>" + "</br>" + this.label);
+						infowindow.open(map, this);
+					});
+				}
+				path = new google.maps.Polyline({
+						path: pathCoords,
+						geodesic: true,
+						strokeColor: '#FF0000',
+						strokeOpacity: 2.0,
+						strokeWeight: 5
+				});
+				path.setMap(map);
+				renderMap();
+			}
+
+		</script>
+		<link rel="stylesheet" href="style.css" type="text/css" />
+	</head>
+	<body onload="initMap()">
+		<div id="map"></div>
+	</body>
+</html>
