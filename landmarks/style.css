@@ -1,11 +1,18 @@
 html {
 	height: 100%;
 }
+
 body {
 	height: 100%;
 	margin: 0px;
-	padding:0px;
+	padding: 0px;
 }
+
 #map {
 	height: 100%;
+}
+
+.info {
+	font-family: Veranda, Geneva, sans-serif;
+	font-size: 14px;
 }

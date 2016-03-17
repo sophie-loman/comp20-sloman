@@ -17,7 +17,7 @@
 			var closestLandmark = "";
 
 			var myOptions = {
-				zoom: 13,
+				zoom: 16,
 				center: me,
 				myTypeId: google.maps.MapTypeId.ROADMAP
 			};
@@ -85,7 +85,7 @@
 				}
 			}
 
-			function renderMap()
+			function placeMe()
 			{
 				me = new google.maps.LatLng(myLat, myLng);
 				login = "VIRGIL_STOUT";
@@ -98,7 +98,7 @@
 				});
 				marker.setMap(map);
 				google.maps.event.addListener(marker, 'click', function() {
-					infowindow.setContent(this.title + "</br>" + "</br>" + this.label);
+					infowindow.setContent("<span class='info'>" + this.title + "</br>" + "</br>" + this.label + "</span>");
 					infowindow.open(map, this);
 				});
 			}
@@ -137,11 +137,11 @@
 						position: person,
 						title: login,
 						icon: person_icon,
-						label: "</br>" + "</br>" + "Distance from me: " +distanceFromMe(personLat, personLng).toString() + " miles"
+						label: "</br>" + "</br>" + "Distance from VIRGIL_STOUT: " +distanceFromMe(personLat, personLng).toString() + " miles"
 					});
 					if (login != "VIRGIL_STOUT") person_marker.setMap(map);
 					google.maps.event.addListener(person_marker, 'click', function() {
-						infowindow.setContent(this.title + this.label);
+						infowindow.setContent("<span class='info'>" + this.title + this.label + "</span>");
 						infowindow.open(map, this);
 					});
 				}
@@ -208,7 +208,7 @@
 						landmark_marker.setMap(map);
 
 					google.maps.event.addListener(landmark_marker, 'click', function() {
-						infowindow.setContent(this.title + "</br>" + "</br>" + this.label);
+						infowindow.setContent("<span class='info'>" + this.title + "</br>" + "</br>" + this.label + "</span>");
 						infowindow.open(map, this);
 					});
 				}
@@ -220,7 +220,7 @@
 						strokeWeight: 5
 				});
 				path.setMap(map);
-				renderMap();
+				placeMe();
 			}
 
 		</script>
