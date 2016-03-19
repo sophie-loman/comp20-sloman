@@ -1,4 +1,4 @@
-**** COMP 20 Lab 7: Captain's Log ****
+***COMP 20 Lab 7: Captain's Log***
 By: Sophie Loman
 Date: 3/18/16
 
