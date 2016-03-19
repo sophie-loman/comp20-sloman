@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Captain's Log</title>
+	<meta charset="utf-8" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<script>
+
+		if ((document.cookie).length != 0) {
+
+			$(document).ready(function() {
+
+				$("#log").html(document.cookie);
+
+			});
+		}
+
+		$(document).keyup(function(key) {
+
+			message = $("#msg").val();
+			msg_time = new Date();
+
+			if (key.which == 13) {
+
+				console.log(msg_time.getDay());
+				$("#log").prepend("<p>" + msg_time + "- " + message + "</p>");
+				document.cookie = $("#log").html(); 
+				
+			}
+		});
+
+	</script>
+</head>
+
+<body>
+	<h1>Captain's Log</h1>
+	<h3>New entry: <input type="text" id="msg" name="msg" size="30" /></h3>
+	<div id="log"></div>
+</body>
+</html>
