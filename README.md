@@ -1,4 +1,6 @@
-***COMP 20 Lab 9: Finalizing My Learning Portfolio By: Sophie Loman Date: 4/28/16
+***COMP 20 Lab 9: Finalizing My Learning Portfolio***
+
+By: Sophie Loman Date: 4/28/16
 
 (1) Purpose of this Git repository
 
