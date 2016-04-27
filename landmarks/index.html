@@ -32,7 +32,7 @@
 			};
 
 			var request = new XMLHttpRequest();
-			var datastore = "http://warm-basin-54317.herokuapp.com/sendLocation";
+			var datastore = "https://damp-springs-72596.herokuapp.com/sendLocation";
 	
 			var LocationData = "";
 
@@ -128,8 +128,8 @@
 
 			function placeClass() {
 				for (count = 0; count < classLocs.length; count++) {
-					login = classLocs[count].login;
 
+					login = classLocs[count].login;
 					personLat = classLocs[count].lat;
 					personLng = classLocs[count].lng;
 					person = new google.maps.LatLng(personLat, personLng);
